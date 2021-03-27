@@ -1,0 +1,5 @@
+bin/*
+pkg/*
+**/test.txt
+showRedirects_2.17glibc
+showRedirects
