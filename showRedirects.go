@@ -122,8 +122,7 @@ func showRedirect(domain string, bot string) (result string) {
 		result += strconv.Itoa(resp.StatusCode)
 
 		// если 200 - заканчиваем
-		// если 302 - обычно это локаль типа "/en" - проверять по нему нечего
-		// 	вот и собираем составной домен
+		// если 302 - обычно это локаль типа "/en" - собираем следующую итерацию
 		// если 301 повторяем цикл с новыми данными
 		if resp.StatusCode == 301 {
 			result += " -> "
