@@ -129,11 +129,12 @@ func showRedirect(domain string, bot string) (result string) {
 			domain = resp.Header.Get("Location")
 		} else if resp.StatusCode == 302 {
 			result += " -> "
+			domain = domain + resp.Header.Get("Location")
+
 			if strings.HasPrefix(resp.Header.Get("Location"), "http") {
 				domain = resp.Header.Get("Location")
-			} else {
-				domain = domain + resp.Header.Get("Location")
 			}
+
 		} else {
 			break
 		}
