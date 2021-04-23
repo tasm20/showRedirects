@@ -32,7 +32,7 @@ func main() {
 	var domains []string
 	// юзер агенты ботов
 	bots := map[string]string{
-		"YANDEX": "Mozilla/5.0 (compatible; YandexDirectDyn/1.0; +http://yandex.com/bots)",
+		"YANDEX": "Mozilla/5.0 (Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots))",
 		"GOOGLE": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
 	}
 
