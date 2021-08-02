@@ -15,9 +15,14 @@ import (
 	"time"
 )
 
+const (
+	ver string = "1.5"
+)
+
 func main() {
 	// переменная для тега - получает имя файла со списком доменов
 	filename := flag.String("f", "", "имя файла")
+	version := flag.Bool("v", false, "выверсия")
 	// для справки
 	flag.String("без ключа", "", "домен[ы] через пробел")
 
@@ -26,6 +31,11 @@ func main() {
 	if len(os.Args[1:]) < 1 {
 		// fmt.Printf("Usage\n - showRedirects domainName\nor\n - showRedirects -f filename\n")
 		flag.PrintDefaults()
+		os.Exit(0)
+	}
+
+	if *version {
+		fmt.Println(ver)
 		os.Exit(0)
 	}
 
