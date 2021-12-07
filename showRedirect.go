@@ -24,7 +24,7 @@ func showRedirect(domain string, bot string) (result string) {
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
 				return http.ErrUseLastResponse
 			},
-			Timeout: 5 * time.Second,
+			Timeout: 15 * time.Second,
 		}
 
 		req, err := http.NewRequest("GET", domain, nil)

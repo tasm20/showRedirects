@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	ver string = "2.1"
+	ver string = "2.2"
 )
 
 var filename *string = flag.String("f", "", "имя файла")
