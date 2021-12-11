@@ -9,10 +9,6 @@ import (
 )
 
 func showRedirect(domain string, bot string) (result string) {
-	if bot == "" {
-		bot = "curlBot"
-	}
-
 	if !strings.HasPrefix(domain, "http") {
 		domain = "http://" + domain
 	}
