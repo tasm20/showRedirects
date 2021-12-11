@@ -19,7 +19,7 @@ func main() {
 	flag.Parse()
 
 	bots := map[string]string{
-		"User":   "curl",
+		"USER":   "curl/7.74.0",
 		"YANDEX": "Mozilla/5.0 (Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots))",
 		"GOOGLE": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
 	}
@@ -37,9 +37,8 @@ func main() {
 	domains := domainList(filename)
 
 	for _, domain := range domains {
-		for name, bot := range bots {
-			fmt.Println("===========", domain, name, "BOT")
-			checkedDomain := showRedirect(domain, bot)
+		for botname, bot := range bots {
+			checkedDomain := showRedirect(domain, botname, bot)
 			fmt.Println(checkedDomain)
 		}
 
