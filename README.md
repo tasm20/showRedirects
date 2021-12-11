@@ -1,6 +1,6 @@
-shows redirects of domain for several bots__
--v - shows version__
--f filename - gets list of domains from file__
+shows redirects of domain for several bots  
+-v - shows version  
+-f filename - gets list of domains from file  
 
 
 example
