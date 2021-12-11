@@ -6,6 +6,7 @@ shows redirects of domain for several bots
 example
 =====================
 ```
+❯ showRedirects amazone.com github.com
 =========== amazone.com YANDEX BOT
 http://amazone.com 301 -> http://www.amazon.fr 301 -> https://www.amazon.fr 200
 =========== amazone.com GOOGLE BOT
