@@ -8,7 +8,8 @@ import (
 	"time"
 )
 
-func showRedirect(domain string, botname string, bot string) (result string) {
+func showRedirect(domain string, botname string, bot string, check chan string) {
+	result := ""
 	result += "=========== " + domain + " " + botname + " BOT\n"
 
 	if !strings.HasPrefix(domain, "http") {
@@ -53,10 +54,9 @@ func showRedirect(domain string, botname string, bot string) (result string) {
 			}
 
 		} else {
-			// result += "\n"
 			break
 		}
 	}
 
-	return result
+	check <- result
 }

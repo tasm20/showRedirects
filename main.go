@@ -37,11 +37,16 @@ func main() {
 	domains := domainList(filename)
 
 	for _, domain := range domains {
+		result := "\n"
+		checkedDomain := make(chan string)
+
 		for botname, bot := range bots {
-			checkedDomain := showRedirect(domain, botname, bot)
-			fmt.Println(checkedDomain)
+			go showRedirect(domain, botname, bot, checkedDomain)
+			result += <-checkedDomain + "\n"
 		}
 
-		fmt.Println()
+		fmt.Println(result)
+
+		close(checkedDomain)
 	}
 }
