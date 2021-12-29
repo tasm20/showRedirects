@@ -8,16 +8,15 @@ import (
 	"time"
 )
 
-func showRedirect(domain string, botname string, bot string, check chan string) {
-	result := ""
-	result += "=========== " + domain + " " + botname + " BOT\n"
+func showRedirect(checkBot Bot) {
+	result := "=========== " + checkBot.domain + " " + checkBot.botName + " BOT\n"
 
-	if !strings.HasPrefix(domain, "http") {
-		domain = "http://" + domain
+	if !strings.HasPrefix(checkBot.domain, "http") {
+		checkBot.domain = "http://" + checkBot.domain
 	}
 
 	for {
-		domain = strings.TrimSuffix(domain, "/")
+		checkBot.domain = strings.TrimSuffix(checkBot.domain, "/")
 
 		client := &http.Client{
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
@@ -26,13 +25,13 @@ func showRedirect(domain string, botname string, bot string, check chan string) 
 			Timeout: 15 * time.Second,
 		}
 
-		req, err := http.NewRequest("GET", domain, nil)
+		req, err := http.NewRequest("GET", checkBot.domain, nil)
 		if err != nil {
 			fmt.Println(err)
 			break
 		}
 
-		req.Header.Set("User-Agent", bot)
+		req.Header.Set("User-Agent", checkBot.bot)
 		resp, err := client.Do(req)
 		if err != nil {
 			fmt.Println(err)
@@ -44,19 +43,18 @@ func showRedirect(domain string, botname string, bot string, check chan string) 
 
 		if resp.StatusCode == 301 {
 			result += " -> "
-			domain = resp.Header.Get("Location")
+			checkBot.domain = resp.Header.Get("Location")
 		} else if resp.StatusCode == 302 {
 			result += " -> "
-			domain = domain + resp.Header.Get("Location")
+			checkBot.domain = checkBot.domain + resp.Header.Get("Location")
 
 			if strings.HasPrefix(resp.Header.Get("Location"), "http") {
-				domain = resp.Header.Get("Location")
+				checkBot.domain = resp.Header.Get("Location")
 			}
 
 		} else {
 			break
 		}
 	}
-
-	check <- result
+	checkBot.result <- result
 }

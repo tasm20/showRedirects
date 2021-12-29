@@ -4,17 +4,25 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"sync"
 )
 
 const (
-	ver string = "2.3"
+	ver string = "2.4"
 )
 
-func main() {
-	version := flag.Bool("v", false, "версия")
-	filename := flag.String("f", "", "имя файла")
+type Bot struct {
+	botName string
+	bot     string
+	domain  string
+	result  chan string
+}
 
-	flag.String("без ключа", "", "домен[ы] через пробел")
+func main() {
+	version := flag.Bool("v", false, "version")
+	filename := flag.String("f", "", "file name")
+
+	flag.String("wothout flag", "", "domains separted by space")
 
 	flag.Parse()
 
@@ -36,17 +44,31 @@ func main() {
 
 	domains := domainList(filename)
 
+	var wg sync.WaitGroup
+
 	for _, domain := range domains {
-		result := "\n"
-		checkedDomain := make(chan string)
 
-		for botname, bot := range bots {
-			go showRedirect(domain, botname, bot, checkedDomain)
-			result += <-checkedDomain + "\n"
-		}
+		wg.Add(1)
+		go func(domain string) {
+			defer wg.Done()
+			result := "\n"
+			checkedDomain := make(chan string)
 
-		fmt.Println(result)
+			for botname, bot := range bots {
+				checkBot := Bot{
+					botName: botname,
+					bot:     bot,
+					domain:  domain,
+					result:  checkedDomain,
+				}
 
-		close(checkedDomain)
+				go showRedirect(checkBot)
+				result += <-checkBot.result + "\n"
+			}
+
+			fmt.Println(result)
+
+		}(domain)
 	}
+	wg.Wait()
 }
