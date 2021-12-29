@@ -67,6 +67,7 @@ func main() {
 			}
 
 			fmt.Println(result)
+			close(checkedDomain)
 
 		}(domain)
 	}
