@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"sync/atomic"
+	"time"
 )
 
 const (
-	ver string = "2.4.2"
+	ver string = "2.4.3"
 )
 
 type Bot struct {
@@ -18,7 +20,11 @@ type Bot struct {
 	result  chan string
 }
 
+var count int32
+
 func main() {
+	start := time.Now()
+
 	version := flag.Bool("v", false, "version")
 	filename := flag.String("f", "", "file name")
 
@@ -50,6 +56,8 @@ func main() {
 
 		wg.Add(1)
 		go func(domain string) {
+			atomic.AddInt32(&count, 1)
+
 			defer wg.Done()
 			result := "\n"
 
@@ -71,4 +79,7 @@ func main() {
 		}(domain)
 	}
 	wg.Wait()
+
+	duration := time.Since(start)
+	fmt.Printf("\nWere checked %d domains for %v\n", count, duration)
 }
