@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func showRedirect(checkBot Bot) {
+func showRedirect(checkBot Bot) string {
 	result := "=========== " + checkBot.domain + " " + checkBot.botName + " BOT\n"
 
 	if !strings.HasPrefix(checkBot.domain, "http") {
@@ -56,5 +56,5 @@ func showRedirect(checkBot Bot) {
 			break
 		}
 	}
-	checkBot.result <- result
+	return result
 }

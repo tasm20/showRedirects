@@ -17,7 +17,6 @@ type Bot struct {
 	botName string
 	bot     string
 	domain  string
-	result  chan string
 }
 
 var count int32
@@ -66,12 +65,10 @@ func main() {
 					botName: botname,
 					bot:     bot,
 					domain:  domain,
-					result:  make(chan string),
 				}
 
-				go showRedirect(checkBot)
-				result += <-checkBot.result + "\n"
-				close(checkBot.result)
+				result += showRedirect(checkBot)
+				result += "\n"
 			}
 
 			fmt.Println(result)
