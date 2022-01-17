@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ver string = "2.4"
+	ver string = "2.4.2"
 )
 
 type Bot struct {
@@ -52,22 +52,21 @@ func main() {
 		go func(domain string) {
 			defer wg.Done()
 			result := "\n"
-			checkedDomain := make(chan string)
 
 			for botname, bot := range bots {
 				checkBot := Bot{
 					botName: botname,
 					bot:     bot,
 					domain:  domain,
-					result:  checkedDomain,
+					result:  make(chan string),
 				}
 
 				go showRedirect(checkBot)
 				result += <-checkBot.result + "\n"
+				close(checkBot.result)
 			}
 
 			fmt.Println(result)
-			close(checkedDomain)
 
 		}(domain)
 	}
