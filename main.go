@@ -27,7 +27,7 @@ func main() {
 	version := flag.Bool("v", false, "version")
 	filename := flag.String("f", "", "file name")
 
-	flag.String("wothout flag", "", "domains separted by space")
+	flag.String("without flag", "", "domains separted by space")
 
 	flag.Parse()
 
