@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	ver string = "2.4.3"
+	ver string = "2.4.4"
 )
 
 type Bot struct {

@@ -53,8 +53,10 @@ func showRedirect(checkBot Bot) string {
 			}
 
 		} else {
+			resp.Body.Close()
 			break
 		}
 	}
+
 	return result
 }

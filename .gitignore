@@ -3,3 +3,4 @@ pkg/*
 showRedirects
 list.txt
 .vscode/*
+.DS_Store
