@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	ver string = "2.4.4"
+	ver string = "2.5.1"
 )
 
+// Bot overwrite
 type Bot struct {
 	botName string
 	bot     string

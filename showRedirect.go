@@ -15,7 +15,14 @@ func showRedirect(checkBot Bot) string {
 		checkBot.domain = "http://" + checkBot.domain
 	}
 
+	redirectsCount := 0
+
 	for {
+		if redirectsCount > 6 {
+			result += "THERE IS TOO MANY REDIRECTS"
+			break
+		}
+
 		checkBot.domain = strings.TrimSuffix(checkBot.domain, "/")
 
 		client := &http.Client{
@@ -42,6 +49,7 @@ func showRedirect(checkBot Bot) string {
 		result += strconv.Itoa(resp.StatusCode)
 
 		if resp.StatusCode == 301 {
+			redirectsCount++
 			result += " -> "
 			checkBot.domain = resp.Header.Get("Location")
 		} else if resp.StatusCode == 302 {
