@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	ver string = "2.5.1"
+	ver string = "2.6.1"
 )
 
 // Bot overwrite
@@ -27,6 +27,7 @@ func main() {
 
 	version := flag.Bool("v", false, "version")
 	filename := flag.String("f", "", "file name")
+	slowCheck := flag.Bool("s", false, "slow check")
 
 	flag.String("without flag", "", "domains separted by space")
 
@@ -50,15 +51,38 @@ func main() {
 
 	domains := domainList(filename)
 
-	var wg sync.WaitGroup
+	if !*slowCheck {
+		var wg sync.WaitGroup
 
-	for _, domain := range domains {
+		for _, domain := range domains {
 
-		wg.Add(1)
-		go func(domain string) {
+			wg.Add(1)
+			go func(domain string) {
+				atomic.AddInt32(&count, 1)
+
+				defer wg.Done()
+				result := "\n"
+
+				for botname, bot := range bots {
+					checkBot := Bot{
+						botName: botname,
+						bot:     bot,
+						domain:  domain,
+					}
+
+					result += showRedirect(checkBot)
+					result += "\n"
+				}
+
+				fmt.Println(result)
+
+			}(domain)
+		}
+		wg.Wait()
+	} else {
+		for _, domain := range domains {
 			atomic.AddInt32(&count, 1)
 
-			defer wg.Done()
 			result := "\n"
 
 			for botname, bot := range bots {
@@ -73,10 +97,8 @@ func main() {
 			}
 
 			fmt.Println(result)
-
-		}(domain)
+		}
 	}
-	wg.Wait()
 
 	duration := time.Since(start)
 	fmt.Printf("\nWere checked %d domains for %v\n", count, duration)
