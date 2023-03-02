@@ -1,7 +1,7 @@
 shows redirects of domain for several bots  
 -v - shows version  
 -f filename - gets list of domains from file  
--s - workы with file name only (at this moment) and check domain redirects slowly  
+-s - check domain redirects slowly  
 
 
 example
