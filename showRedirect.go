@@ -46,7 +46,18 @@ func showRedirect(checkBot Bot) string {
 		}
 
 		result += string(resp.Request.URL.String()) + " "
-		result += strconv.Itoa(resp.StatusCode)
+		respCode := strconv.Itoa(resp.StatusCode)
+
+		if resp.StatusCode == 200 {
+			colored := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 32, respCode) // green color
+			result += colored
+			resp.Body.Close()
+			break
+		} else if resp.StatusCode > 400 {
+			colored := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, respCode) // red color
+			result += colored
+			break
+		}
 
 		if resp.StatusCode == 301 {
 			redirectsCount++
@@ -59,11 +70,12 @@ func showRedirect(checkBot Bot) string {
 			if strings.HasPrefix(resp.Header.Get("Location"), "http") {
 				checkBot.domain = resp.Header.Get("Location")
 			}
-
-		} else {
-			resp.Body.Close()
-			break
 		}
+
+		// if resp.StatusCode == 200 {
+		// 	resp.Body.Close()
+		// 	break
+		// }
 	}
 
 	return result
