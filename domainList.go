@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 )
@@ -28,7 +29,7 @@ func domainList(filename *string) []string {
 
 		file.Close()
 	} else {
-		domains = append(domains, os.Args[1:]...)
+		domains = flag.Args()
 	}
 
 	return domains
