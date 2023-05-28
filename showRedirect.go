@@ -19,7 +19,8 @@ func showRedirect(checkBot Bot) string {
 
 	for {
 		if redirectsCount > 6 {
-			result += "THERE IS TOO MANY REDIRECTS"
+			manyRedirects := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, "THERE IS TOO MANY REDIRECTS")
+			result += manyRedirects
 			break
 		}
 
@@ -47,8 +48,8 @@ func showRedirect(checkBot Bot) string {
 
 		result += string(resp.Request.URL.String()) + " "
 		respCode := strconv.Itoa(resp.StatusCode)
-		
-		if resp.StatusCode > 400 {
+
+		if resp.StatusCode >= 400 {
 			colored := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, respCode) // red color
 			result += colored
 			resp.Body.Close()
