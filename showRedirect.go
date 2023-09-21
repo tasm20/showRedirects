@@ -52,12 +52,18 @@ func showRedirect(checkBot Bot) string {
 		if resp.StatusCode >= 400 {
 			colored := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, respCode) // red color
 			result += colored
-			resp.Body.Close()
+			err := resp.Body.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
 			break
 		} else if resp.StatusCode == 200 {
 			colored := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 32, respCode) // green color
 			result += colored
-			resp.Body.Close()
+			err := resp.Body.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
 			break
 		}
 
@@ -67,7 +73,10 @@ func showRedirect(checkBot Bot) string {
 			redirectsCount++
 			result += " -> "
 			checkBot.domain = resp.Header.Get("Location")
-			resp.Body.Close()
+			err := resp.Body.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
 		} else if resp.StatusCode == 302 {
 			result += " -> "
 			checkBot.domain = checkBot.domain + resp.Header.Get("Location")
@@ -75,7 +84,10 @@ func showRedirect(checkBot Bot) string {
 			if strings.HasPrefix(resp.Header.Get("Location"), "http") {
 				checkBot.domain = resp.Header.Get("Location")
 			}
-			resp.Body.Close()
+			err := resp.Body.Close()
+			if err != nil {
+				fmt.Println(err)
+			}
 		}
 	}
 

@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	ver string = "2.7.5"
+	ver string = "2.7.6"
 )
 
 // Bot overwrite
@@ -29,7 +29,7 @@ func main() {
 	filename := flag.String("f", "", "file name")
 	slowCheck := flag.Bool("s", false, "slow check")
 
-	flag.String("without flag", "", "domains separted by space")
+	flag.String("without flag", "", "domains separated by space")
 
 	flag.Parse()
 

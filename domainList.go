@@ -27,7 +27,10 @@ func domainList(filename *string) []string {
 			domains = append(domains, input.Text())
 		}
 
-		file.Close()
+		err = file.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
 	} else {
 		domains = flag.Args()
 	}
