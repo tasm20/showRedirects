@@ -24,8 +24,6 @@ func showRedirect(checkBot Bot) string {
 			break
 		}
 
-		//checkBot.domain = strings.TrimSuffix(checkBot.domain, "/")
-
 		client := &http.Client{
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
 				return http.ErrUseLastResponse
@@ -65,6 +63,10 @@ func showRedirect(checkBot Bot) string {
 				fmt.Println(err)
 			}
 			break
+		}
+
+		if resp.StatusCode == 302 {
+			checkBot.domain = strings.TrimSuffix(checkBot.domain, "/")
 		}
 
 		result += strconv.Itoa(resp.StatusCode)

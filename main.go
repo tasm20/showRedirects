@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	ver string = "2.7.7"
+	ver string = "2.7.8"
 )
 
 // Bot overwrite
