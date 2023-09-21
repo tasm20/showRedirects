@@ -24,7 +24,7 @@ func showRedirect(checkBot Bot) string {
 			break
 		}
 
-		checkBot.domain = strings.TrimSuffix(checkBot.domain, "/")
+		//checkBot.domain = strings.TrimSuffix(checkBot.domain, "/")
 
 		client := &http.Client{
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
