@@ -18,7 +18,7 @@ func showRedirect(checkBot Bot) string {
 	redirectsCount := 0
 
 	for {
-		if redirectsCount > 6 {
+		if redirectsCount > 10 {
 			manyRedirects := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, "THERE IS TOO MANY REDIRECTS")
 			result += manyRedirects
 			break
@@ -47,6 +47,12 @@ func showRedirect(checkBot Bot) string {
 		result += string(resp.Request.URL.String()) + " "
 		respCode := strconv.Itoa(resp.StatusCode)
 
+		checkLocation := resp.Header.Get("Location")
+		if !strings.HasPrefix(checkLocation, "http") {
+			checkLocationSplit := strings.Split(checkBot.domain, "/")
+			checkLocation = checkLocationSplit[0] + "//" + checkLocationSplit[2] + checkLocation
+		}
+
 		if resp.StatusCode >= 400 {
 			colored := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, respCode) // red color
 			result += colored
@@ -74,14 +80,15 @@ func showRedirect(checkBot Bot) string {
 		if resp.StatusCode == 301 {
 			redirectsCount++
 			result += " -> "
-			checkBot.domain = resp.Header.Get("Location")
+
+			checkBot.domain = checkLocation
 			err := resp.Body.Close()
 			if err != nil {
 				fmt.Println(err)
 			}
 		} else if resp.StatusCode == 302 {
 			result += " -> "
-			checkBot.domain = checkBot.domain + resp.Header.Get("Location")
+			checkBot.domain = checkLocation
 
 			if strings.HasPrefix(resp.Header.Get("Location"), "http") {
 				checkBot.domain = resp.Header.Get("Location")
